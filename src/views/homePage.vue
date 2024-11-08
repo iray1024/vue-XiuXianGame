@@ -58,7 +58,7 @@
                     <div class="tag attribute">
                         总体实力: {{ $formatNumberToChineseUnit(player.score) }}
                     </div>
-                    <div class="tag attribute" @click="$notifys({title: '获得方式', message: '每提成一次境界可以获得3点境界点'})">
+                    <div class="tag attribute" @click="$notifys({title: '获得方式', message: '每提升一次境界可以获得3点境界点'})">
                         境界点: {{ $formatNumberToChineseUnit(player.points) }}
                         <el-icon>
                             <Warning />

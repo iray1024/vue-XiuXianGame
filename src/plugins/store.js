@@ -31,26 +31,26 @@ export const useMainStore = defineStore('main', {
             pets: [],
             wifes: [],
             props: {
-                money: 0,
-                flying: 0,
-                qingyuan: 0,
-                rootBone: 0,
-                currency: 0,
-                cultivateDan: 0,
-                strengtheningStone: 0
+                money: 999999999999,
+                flying: 9999,
+                qingyuan: 9999,
+                rootBone: 9999,
+                currency: 9999,
+                cultivateDan: 9999,
+                strengtheningStone: 9999
             },
             score: 0,
             level: 0,
-            dodge: 0,
-            points: 0,
+            dodge: 0.66,
+            points: 9999,
             attack: 10,
-            health: 100,
-            critical: 0,
-            defense: 10,
+            health: 5201314,
+            critical: 0.88,
+            defense: 888,
             taskNum: 0,
             version: 0.8,
             currency: 0,            
-            maxHealth: 100,
+            maxHealth: 5201314,
             inventory: [],
             isNewbie: false,
             shopData: [],
@@ -70,7 +70,7 @@ export const useMainStore = defineStore('main', {
             currentTitle: null,
             reincarnation: 0,
             maxCultivation: 100,
-            backpackCapacity: 50,
+            backpackCapacity: 5201314,
             sellingEquipmentData: [],
             highestTowerFloor: 1,
             rewardedTowerFloors: [],
@@ -117,15 +117,15 @@ export const useMainStore = defineStore('main', {
         serializer: {
             serialize: (state) => {
                 return JSON.stringify({
-                    boss: crypto.encryption(state.boss),
-                    player: crypto.encryption(state.player)
+                    boss: state.boss,//crypto.encryption(state.boss),
+                    player: state.player//crypto.encryption(state.player)
                 });
             },
             deserialize: (value) => {
                 const state = JSON.parse(value);
                 return {
-                    boss: crypto.decryption(state.boss),
-                    player: crypto.decryption(state.player)
+                    boss: state.boss,//crypto.decryption(state.boss),
+                    player: state.player//crypto.decryption(state.player)
                 };
             }
         }

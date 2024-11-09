@@ -173,7 +173,7 @@
                 gridSize: 50,
                 giftShow: false,
                 // NPC的数量
-                npcCount: 10,
+                npcCount: 14,
                 // 是否正在长按
                 holdingId: null,
                 // 钓鱼点坐标
@@ -205,7 +205,7 @@
                 for (let i = 1; i < 7; i++) {
                     arr.push({
                         lv: lv[i],
-                        plus: price[i] / 100,
+                        plus: price[i] / 10,
                         name: `${num[i]}品驻颜丹`,
                         price: price[i]
                     });
@@ -481,7 +481,7 @@
                 return minLightness + (maxLightness - minLightness) * percentage;
             },
             harvestNpc (item) {
-                this.$confirm('与对方结为道侣有50%的概率失败, 失败后好感度会清空, 请问还想与对方结为道侣吗?', '结为道侣', {
+                this.$confirm('与对方结为道侣有50%的概率失败, 失败后好感度会减半, 请问还想与对方结为道侣吗?', '结为道侣', {
                     center: true,
                     cancelButtonText: '取消',
                     confirmButtonText: '确定',
@@ -501,41 +501,26 @@
                         });
                         this.$notifys({ title: '提示', message: '你成功邀请对方与你结为道侣', position: 'top-left' });
                     } else {
-                        this.npcInfo.favorability = 0;
-                        this.$notifys({ title: '提示', message: '对方拒绝了你的邀请, 好感度清空', position: 'top-left' });
+                        this.npcInfo.favorability = Math.floor(this.npcInfo.favorability / 2);
+                        this.$notifys({ title: '提示', message: '对方拒绝了你的邀请, 好感度减半', position: 'top-left' });
                     }
                 }).catch(() => { });
             },
             // 礼物信息
             giftInfo (item, index) {
-                this.$confirm('', '赠送礼物', {
-                    center: true,
-                    message: `<div class="monsterinfo">
-                        <div class="monsterinfo-box">
-                            <p>名称: ${item.name}</p>
-                            <p>价格: ${item.price}</p>
-                            <p>增加好感度: ${item.plus}</p>
-                        </div>
-                    </div>`,
-                    lockScroll: false,
-                    cancelButtonText: '取消赠送',
-                    confirmButtonText: '立即赠送',
-                    dangerouslyUseHTMLString: true
-                }).then(() => {
-                    if (item.price > this.player.props.money) {
-                        this.$notifys({ title: '赠送提示', message: '灵石不足, 赠送失败', position: 'top-left' });
-                        return;
-                    }
-                    // 扣除灵石数量
-                    this.player.props.money -= item.price;
-                    // 增加好感度
-                    this.npcInfo.favorability += item.plus;
-                    // 增加传送符
-                    this.player.props.flying += index;
-                    // 增加情缘点
-                    this.player.props.qingyuan += index;
-                    this.$notifys({ title: '赠送提示', message: `赠送成功, ${this.npcInfo.name}对你的好感度增加了, 并赠与了你${index}张传送符和${index}点情缘`, position: 'top-left' });
-                }).catch(() => { });
+                if (item.price > this.player.props.money) {
+                    this.$notifys({ title: '赠送提示', message: '灵石不足, 赠送失败', position: 'top-left' });
+                    return;
+                }
+                // 扣除灵石数量
+                this.player.props.money -= item.price;
+                // 增加好感度
+                this.npcInfo.favorability += item.plus;
+                // 增加传送符
+                this.player.props.flying += index;
+                // 增加情缘点
+                this.player.props.qingyuan += index;
+                this.$notifys({ title: '赠送提示', message: `赠送成功, ${this.npcInfo.name}对你的好感度增加了, 并赠与了你${index}张传送符和${index}点情缘`, position: 'top-left' });
             },
             // 地图信息
             gridInfo (index, item) {

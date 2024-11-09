@@ -121,13 +121,13 @@
                 const reincarnation = this.player.reincarnation ? this.player.reincarnation + 1 : 1;
                 if (this.player.level < this.$maxLv) {
                     if (this.player.cultivation >= this.player.maxCultivation) {
-                        if (this.player.level > 10 && this.player.level > this.player.taskNum) {
-                            this.stopCultivate();
-                            this.isStop = false;
-                            this.isStart = false;
-                            this.texts.push(`当前境界修为已满, 你需要通过击败<span class="textColor">(${this.player.taskNum} / ${this.player.level})</span>个敌人证道突破`);
-                            return;
-                        }
+                        // if (this.player.level > 10 && this.player.level > this.player.taskNum) {
+                        //     this.stopCultivate();
+                        //     this.isStop = false;
+                        //     this.isStart = false;
+                        //     this.texts.push(`当前境界修为已满, 你需要通过击败<span class="textColor">(${this.player.taskNum} / ${this.player.level})</span>个敌人证道突破`);
+                        //     return;
+                        // }
                         this.player.taskNum = 0;
                         this.player.level++;
                         this.player.points += 3;

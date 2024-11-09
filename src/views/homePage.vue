@@ -792,7 +792,7 @@
                 // 灵宠数据
                 petInfo: {},
                 // 炼器保护
-                protect: false,
+                protect: true,
                 // 炼器增幅
                 increase: false,
                 // 修改昵称
@@ -1303,66 +1303,61 @@
                     this.$notifys({ title: '炼器提示', message: '当前装备炼器等级已满', position: 'top-left' });
                     return;
                 }
-                // 炼器确认弹窗
-                this.$confirm(item.strengthen >= 15 && !this.protect ? `当前装备炼器等级已达到+${item.strengthen}, 如果炼器失败该装备会销毁, 请问还需要炼器吗?` : '你确定要炼器吗?', '炼器提示', {
-                    cancelButtonText: '我点错了',
-                    confirmButtonText: '确定以及肯定'
-                }).then(() => {
-                    // 如果炼器成功
-                    if (Math.random() <= successRate) {
-                        // 攻击
-                        const attack = Math.floor(item.initial.attack * 0.2);
-                        // 血量
-                        const health = Math.floor(item.initial.health * 0.2);
-                        // 防御
-                        const defense = Math.floor(item.initial.defense * 0.2);
-                        switch (item.type) {
-                            // 如果是神兵
-                            case 'weapon':
-                                item.attack += attack;
-                                this.playerAttribute(0, attack, 0, 0, 0);
-                                break;
-                            // 如果是防具
-                            case 'armor':
-                                item.health += health;
-                                item.defense += defense;
-                                this.playerAttribute(0, 0, health, 0, defense);
-                                break;
-                            // 如果是灵宝或法器
-                            case 'accessory':
-                            case 'sutra':
-                                item.attack += attack;
-                                item.health += health;
-                                item.defense += defense;
-                                this.playerAttribute(0, attack, health, 0, defense);
-                                break;
-                            default:
-                                break;
-                        }
-                        // 增加炼器等级
-                        item.strengthen++;
-                        // 重新计算装备评分
-                        item.score = equip.calculateEquipmentScore(item.dodge, item.attack, item.health, item.critical, item.defense);
-                        // 发送炼器成功通知
-                        this.$notifys({ title: '炼器提示', message: '炼器成功', position: 'top-left' });
-                    } else {
-                        // 如果炼器等级等于或大于15级并且未开启炼器保护
-                        if (item.strengthen >= 15 && !this.protect) {
-                            // 移除销毁当前装备
-                            this.player.equipment[item.type] = {};
-                            // 扣除已销毁装备增加的属性
-                            this.playerAttribute(-item.dodge, -item.attack, -item.health, -item.critical, -item.defense);
-                            // 炼器等级清零
-                            item.strengthen = 0;
-                            // 关闭炼器弹窗
-                            this.strengthenShow = false;
-                        }
-                        // 发送炼器失败通知
-                        this.$notifys({ title: '炼器提示', message: item.strengthen >= 15 && !this.protect ? '炼器失败, 装备已自动销毁' : '炼器失败', position: 'top-left' });
+               
+                // 如果炼器成功
+                if (Math.random() <= successRate) {
+                    // 攻击
+                    const attack = Math.floor(item.initial.attack * 0.2);
+                    // 血量
+                    const health = Math.floor(item.initial.health * 0.2);
+                    // 防御
+                    const defense = Math.floor(item.initial.defense * 0.2);
+                    switch (item.type) {
+                        // 如果是神兵
+                        case 'weapon':
+                            item.attack += attack;
+                            this.playerAttribute(0, attack, 0, 0, 0);
+                            break;
+                        // 如果是防具
+                        case 'armor':
+                            item.health += health;
+                            item.defense += defense;
+                            this.playerAttribute(0, 0, health, 0, defense);
+                            break;
+                        // 如果是灵宝或法器
+                        case 'accessory':
+                        case 'sutra':
+                            item.attack += attack;
+                            item.health += health;
+                            item.defense += defense;
+                            this.playerAttribute(0, attack, health, 0, defense);
+                            break;
+                        default:
+                            break;
                     }
-                    // 扣除炼器石
-                    this.player.props.strengtheningStone -= calculateCost;
-                }).catch(() => { });
+                    // 增加炼器等级
+                    item.strengthen++;
+                    // 重新计算装备评分
+                    item.score = equip.calculateEquipmentScore(item.dodge, item.attack, item.health, item.critical, item.defense);
+                    // 发送炼器成功通知
+                    this.$notifys({ title: '炼器提示', message: '炼器成功', position: 'top-left' });
+                } else {
+                    // 如果炼器等级等于或大于15级并且未开启炼器保护
+                    if (item.strengthen >= 15 && !this.protect) {
+                        // 移除销毁当前装备
+                        this.player.equipment[item.type] = {};
+                        // 扣除已销毁装备增加的属性
+                        this.playerAttribute(-item.dodge, -item.attack, -item.health, -item.critical, -item.defense);
+                        // 炼器等级清零
+                        item.strengthen = 0;
+                        // 关闭炼器弹窗
+                        this.strengthenShow = false;
+                    }
+                    // 发送炼器失败通知
+                    this.$notifys({ title: '炼器提示', message: item.strengthen >= 15 && !this.protect ? '炼器失败, 装备已自动销毁' : '炼器失败', position: 'top-left' });
+                }
+                // 扣除炼器石
+                this.player.props.strengtheningStone -= calculateCost;
             },
             // 计算炼器所需消耗的道具数量
             calculateCost (item) {
@@ -1489,27 +1484,21 @@
                     this.$notifys({ title: '道侣升级提示', message: '情缘点不足, 进行无法培养', position: 'top-left' });
                     return;
                 }
-                // 道侣升级确认弹窗
-                this.$confirm('你确定要升级该道侣吗?', '道侣升级提示', {
-                    cancelButtonText: '我点错了',
-                    confirmButtonText: '确定以及肯定'
-                }).then(() => {
-                    const attack = Math.floor(item.attack * 0.1);
-                    const health = Math.floor(item.health * 0.1);
-                    const defense = Math.floor(item.defense * 0.1);
-                    // 增加道侣等级
-                    this.player.wife.level++;
-                    // 发送通知
-                    this.$notifys({ title: '道侣升级提示', message: '道侣升级提示成功', position: 'top-left' });
-                    // 增加道侣属性
-                    this.player.wife.attack += attack;
-                    this.player.wife.health += health;
-                    this.player.wife.defense += defense;
-                    // 更新玩家属性，添加道侣升级后的属性加成
-                    this.playerAttribute(0, attack, health, 0, defense);
-                    // 扣除情缘点
-                    this.player.props.qingyuan -= consume;
-                }).catch(() => { });
+                const attack = Math.floor(item.attack * 0.1);
+                const health = Math.floor(item.health * 0.1);
+                const defense = Math.floor(item.defense * 0.1);
+                // 增加道侣等级
+                this.player.wife.level++;
+                // 发送通知
+                this.$notifys({ title: '道侣升级提示', message: '道侣升级提示成功', position: 'top-left' });
+                // 增加道侣属性
+                this.player.wife.attack += attack;
+                this.player.wife.health += health;
+                this.player.wife.defense += defense;
+                // 更新玩家属性，添加道侣升级后的属性加成
+                this.playerAttribute(0, attack, health, 0, defense);
+                // 扣除情缘点
+                this.player.props.qingyuan -= consume;
             },
             // 计算灵宠升级所需消耗
             petConsumption (lv) {
@@ -1572,6 +1561,7 @@
                             <p>防御: ${this.$formatNumberToChineseUnit(item.defense)}</p>
                         </div>
                     </div>`,
+                    cancelButtonText: '取消',
                     confirmButtonText: '跟随',
                     dangerouslyUseHTMLString: true
                 }).then(() => {

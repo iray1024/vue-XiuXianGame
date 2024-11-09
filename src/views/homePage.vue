@@ -1418,61 +1418,56 @@
                     this.$notifys({ title: '灵宠培养提示', message: '培养丹不足, 进行无法培养', position: 'top-left' });
                     return;
                 }
-                // 灵宠培养确认弹窗
-                this.$confirm('你确定要培养该灵宠吗?', '灵宠培养提示', {
-                    cancelButtonText: '我点错了',
-                    confirmButtonText: '确定以及肯定'
-                }).then(() => {
-                    let attack, health, defense = 0;
-                    // 如果勾选了提升悟性并且悟性丹足够
-                    if (this.petRootBone && this.player.props.rootBone >= item.rootBone) {
-                        let rootBone = item.initial.rootBone - item.rootBone;
-                        rootBone = rootBone ? rootBone : 1;
-                        // 攻击
-                        attack = Math.floor(item.initial.attack * rootBone);
-                        // 血量
-                        health = Math.floor(item.initial.health * rootBone);
-                        // 防御
-                        defense = Math.floor(item.initial.defense * rootBone);
-                        // 提升悟性
-                        item.rootBone++;
-                        // 扣除悟性丹
-                        this.player.props.rootBone -= item.rootBone;
-                    } else {
-                        // 攻击
-                        attack = Math.floor(item.initial.attack * 0.05);
-                        // 血量
-                        health = Math.floor(item.initial.health * 0.05);
-                        // 防御
-                        defense = Math.floor(item.initial.defense * 0.05);
-                    }
-                    // 如果勾选了转生并且当前等级已满
-                    if (this.petReincarnation && item.level >= this.$maxLv) {
-                        // 重置灵宠等级
-                        this.player.pet.level = 1;
-                        // 取消转生勾选
-                        this.petReincarnation = false;
-                        // 增加灵宠转生次数
-                        this.player.pet.reincarnation++;
-                        // 发送通知
-                        this.$notifys({ title: '灵宠培养提示', message: '灵宠转生成功, 已重置灵宠境界', position: 'top-left' });
-                    } else {
-                        // 增加灵宠等级
-                        this.player.pet.level++;
-                        // 发送通知
-                        this.$notifys({ title: '灵宠培养提示', message: '灵宠培养成功', position: 'top-left' });
-                    }
-                    // 增加灵宠属性
-                    this.player.pet.attack += attack;
-                    this.player.pet.health += health;
-                    this.player.pet.defense += defense;
-                    // 更新玩家属性，添加灵宠培养后的属性加成
-                    this.playerAttribute(0, attack, health, 0, defense);
-                    // 重新计算灵宠评分
-                    this.player.pet.score = equip.calculateEquipmentScore(this.player.pet.dodge, this.player.pet.attack, this.player.pet.health, this.player.pet.critical, this.player.pet.defense);
-                    // 扣除培养丹
-                    this.player.props.cultivateDan -= consume;
-                }).catch(() => { });
+                let attack, health, defense = 0;
+                // 如果勾选了提升悟性并且悟性丹足够
+                if (this.petRootBone && this.player.props.rootBone >= item.rootBone) {
+                    let rootBone = Math.abs(item.initial.rootBone - item.rootBone);
+                    rootBone = rootBone ? rootBone : 1;
+
+                    // 攻击
+                    attack = Math.floor(item.initial.attack * rootBone * 0.5);
+                    // 血量
+                    health = Math.floor(item.initial.health * rootBone * 0.5);
+                    // 防御
+                    defense = Math.floor(item.initial.defense * rootBone * 0.5);
+                    // 提升悟性
+                    item.rootBone++;
+                    // 扣除悟性丹
+                    this.player.props.rootBone -= item.rootBone;
+                } else {
+                    // 攻击
+                    attack = Math.floor(item.initial.attack * 0.05);
+                    // 血量
+                    health = Math.floor(item.initial.health * 0.05);
+                    // 防御
+                    defense = Math.floor(item.initial.defense * 0.05);
+                }
+                // 如果勾选了转生并且当前等级已满
+                if (this.petReincarnation && item.level >= this.$maxLv) {
+                    // 重置灵宠等级
+                    this.player.pet.level = 1;
+                    // 取消转生勾选
+                    this.petReincarnation = false;
+                    // 增加灵宠转生次数
+                    this.player.pet.reincarnation++;
+                    // 发送通知
+                    this.$notifys({ title: '灵宠培养提示', message: '灵宠转生成功, 已重置灵宠境界', position: 'top-left' });
+                } else {
+                    // 增加灵宠等级
+                    this.player.pet.level++;
+                    // 发送通知
+                    this.$notifys({ title: '灵宠培养提示', message: '灵宠培养成功', position: 'top-left' });
+                }
+                // 增加灵宠属性
+                this.player.pet.attack += attack;
+                this.player.pet.health += health;
+                this.player.pet.defense += defense;
+                // 更新玩家属性，添加灵宠培养后的属性加成
+                this.playerAttribute(0, attack, health, 0, defense);
+                // 重新计算灵宠评分
+                this.player.pet.score = equip.calculateEquipmentScore(this.player.pet.dodge, this.player.pet.attack, this.player.pet.health, this.player.pet.critical, this.player.pet.defense);
+                // 扣除培养丹
+                this.player.props.cultivateDan -= consume;
             },
             // 道侣升级
             wifeUpgrade (item) {

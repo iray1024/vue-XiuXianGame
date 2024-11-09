@@ -32,12 +32,12 @@ export const useMainStore = defineStore('main', {
             wifes: [],
             props: {
                 money: 999999999999,
-                flying: 9999,
-                qingyuan: 9999,
-                rootBone: 9999,
-                currency: 9999,
-                cultivateDan: 9999,
-                strengtheningStone: 9999
+                flying: 999999999999,
+                qingyuan: 999999999999,
+                rootBone: 999999999999,
+                currency: 999999999999,
+                cultivateDan: 999999999999,
+                strengtheningStone: 999999999999
             },
             score: 0,
             level: 0,

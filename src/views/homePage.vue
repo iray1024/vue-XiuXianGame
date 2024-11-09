@@ -1382,7 +1382,7 @@
                 // 基础成功率
                 let baseSuccessRate = 1;
                 // 每级降低成功率
-                let decrementPerLevel = 0.03;
+                let decrementPerLevel = 0.01;
                 // 炼器增幅
                 let increase = this.increase ? 0.1 : 0;
                 // 最终成功率

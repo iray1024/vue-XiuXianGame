@@ -153,8 +153,7 @@
                         this.$notifys({ title: '未满足转生条件', message: `当前还有${this.player.points}境界点未使用, 无法转生` });
                         return;
                     }
-                    if (this.player.taskNum >= reincarnation) {
-                        const txt = this.player.reincarnation == 0 ? '转生之后的敌人属性是转生前的百倍<br>转生前请务必确认自己的实力是否足够战胜转生后的对手, 避免卡档后删档重练' : '转生操作不可逆, 是否确定要转生?';
+                    const txt = this.player.reincarnation == 0 ? '转生之后的敌人属性是转生前的百倍<br>转生前请务必确认自己的实力是否足够战胜转生后的对手, 避免卡档后删档重练' : '转生操作不可逆, 是否确定要转生?';
                         this.$confirm(txt, '转生提醒', {
                             center: true,
                             cancelButtonText: '取消转生',
@@ -173,13 +172,6 @@
                                 dangerouslyUseHTMLString: true
                             });
                         }).catch(() => { });
-                    } else {
-                        this.$notifys({
-                            title: '未满足转生条件',
-                            message: `需要通过击败<span class="textColor">(${this.player.taskNum} / ${reincarnation})</span>个敌人证道转生`,
-                            dangerouslyUseHTMLString: true
-                        });
-                    }
                 } else {
                     this.$notifys({
                         title: '未满足转生条件',

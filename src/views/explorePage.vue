@@ -304,10 +304,10 @@
                     if (this.player.level < this.$maxLv) {
                         if (this.player.cultivation >= this.player.maxCultivation) {
                             // 如果玩家等级大于10并且击杀数低于当前等级
-                            if (this.player.level > 10 && this.player.level > this.player.taskNum) {
-                                this.texts.push(`当前境界修为已满, 你需要通过击败<span class="textColor">(${this.player.taskNum} / ${this.player.level})</span>个敌人证道突破`);
-                                return;
-                            }
+                            // if (this.player.level > 10 && this.player.level > this.player.taskNum) {
+                            //     this.texts.push(`当前境界修为已满, 你需要通过击败<span class="textColor">(${this.player.taskNum} / ${this.player.level})</span>个敌人证道突破`);
+                            //     return;
+                            // }
                             // 清空已击杀敌人
                             this.player.taskNum = 0;
                             // 增加境界
